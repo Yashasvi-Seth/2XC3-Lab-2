@@ -91,3 +91,31 @@ def MVC(G):
     return min_cover
 
 
+#Optimized BFS function Author: Sreyo Biswas
+def BFS2(G, node1, node2):
+    #initialize all nodes as unmarked and set the previous node of each node to None
+    marked = {node: False for node in G.adj}
+    marked[node1] = True
+    prev = {node1: None}
+    Q= deque([node1])
+
+    #start BFS traversal
+    while len(Q) !=0:
+        current_node = Q.popleft()
+        if current_node == node2:
+            #reconstruct path using predecessors 
+            result = []
+            node = current_node
+            while node is not None:
+                result.append(node)
+                node = prev[node]
+            return result[::-1]
+        for node in G.adj[current_node]:
+            if not marked[node]:
+                marked[node] = True
+                prev[node] = current_node
+                Q.append(node)
+    #if no path exists, we return an empty list
+    return []
+
+
