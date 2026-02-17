@@ -147,3 +147,42 @@ def DFS2(G, node1, node2):
     #if no path exists, we return an empty list
     return []
 
+#BFS3 function Author : Sreyo Biswas
+def BFS3(G, node):
+    #initialize all nodes as unmarked
+    marked = {n : False for n in G.adj}
+    marked[node] = True
+    predecessor = {}
+    Q = deque([node])
+
+    #start BFS traversal
+    while len(Q) != 0:
+        current_node = Q.popleft()
+        #visit neighbours and mark them accordingly
+        for neighbor in G.adj[current_node]:
+            if not marked[neighbor]:
+                marked[neighbor] = True
+                predecessor[neighbor] = current_node
+                Q.append(neighbor)
+    #return the dictionary of predecessors 
+    return predecessor
+
+#DFS3 function Author : Sreyo Biswas
+def DFS3(G, node):
+    #initialize all nodes as unmarked
+    marked = {n: False for n in G.adj}
+    marked[node] = True
+    predecessor = {}
+    S = [node]
+
+    #start DFS traversal
+    while len(S) != 0:
+        current_node = S.pop()
+        #visit neighbours and mark them accordingly
+        for neighbor in G.adj[current_node]:
+            if not marked[neighbor]:
+                marked[neighbor] = True
+                predecessor[neighbor] = current_node
+                S.append(neighbor)
+    #return the dictionary of predecessors
+    return predecessor
