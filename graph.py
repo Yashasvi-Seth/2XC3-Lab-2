@@ -186,3 +186,4 @@ def DFS3(G, node):
                 S.append(neighbor)
     #return the dictionary of predecessors
     return predecessor
+
