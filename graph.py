@@ -91,9 +91,9 @@ def MVC(G):
     return min_cover
 
 
-#Optimized BFS function Author: Sreyo Biswas
+#Optimized BFS function Author : Sreyo Biswas
 def BFS2(G, node1, node2):
-    #initialize all nodes as unmarked and set the previous node of each node to None
+    #initialize all nodes as unmarked and track the predecessors
     marked = {node: False for node in G.adj}
     marked[node1] = True
     prev = {node1: None}
@@ -110,6 +110,7 @@ def BFS2(G, node1, node2):
                 result.append(node)
                 node = prev[node]
             return result[::-1]
+        #visit neighbours and mark them accordingly
         for node in G.adj[current_node]:
             if not marked[node]:
                 marked[node] = True
@@ -118,4 +119,31 @@ def BFS2(G, node1, node2):
     #if no path exists, we return an empty list
     return []
 
+#Optimized DFS function Author : Sreyo Biswas
+def DFS2(G, node1, node2):
+    #initialize all nodes as unmarked and track the predecessors
+    marked = {node: False for node in G.adj}
+    marked[node1] = True
+    predecessor= {node1: None}
+    S = [node1]
+
+    #start DFS traversal
+    while len(S) != 0:
+        current_node = S.pop()
+        if current_node == node2:
+            #reconstruct path using predecessors
+            result = []
+            node = current_node
+            while node is not None:
+                result.append(node)
+                node = predecessor[node]
+            return result[::-1]
+        #visit neighbours and mark them accordingly
+        for node in G.adj[current_node]:
+            if not marked[node]:
+                marked[node] = True
+                predecessor[node] = current_node
+                S.append(node)
+    #if no path exists, we return an empty list
+    return []
 
