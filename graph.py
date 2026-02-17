@@ -187,3 +187,38 @@ def DFS3(G, node):
     #return the dictionary of predecessors
     return predecessor
 
+#Implementing has_cycle and is_connected functions : Yashasvi Seth
+def has_cycle(G):
+    # Track visited nodes across all components
+    visited = {node: False for node in G.adj}
+
+    for start in G.adj:
+        if visited[start]:
+            continue
+
+        # Reuse DFS3 to build a DFS tree (predecessor map) for this component
+        predecessor = DFS3(G, start)
+        component_nodes = set(predecessor.keys()) | {start}
+        for node in component_nodes:
+            visited[node] = True
+
+        # Any edge not in the DFS tree implies a cycle in an undirected graph
+        for node in component_nodes:
+            for neighbor in G.adj[node]:
+                if neighbor not in component_nodes:
+                    continue
+                if predecessor.get(node) == neighbor or predecessor.get(neighbor) == node:
+                    continue
+                return True
+    return False
+
+
+def is_connected(G):
+    if len(G.adj) == 0:
+        return True
+
+    # Reuse DFS3 to collect all nodes reachable from an arbitrary start
+    start = next(iter(G.adj))
+    predecessor = DFS3(G, start)
+    reachable = set(predecessor.keys()) | {start}
+    return len(reachable) == len(G.adj)
