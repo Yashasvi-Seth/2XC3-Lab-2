@@ -81,7 +81,7 @@ def is_vertex_cover(G, C):
     return True
 
 def MVC(G):
-    nodes = [i for i in range(G.get_size())]
+    nodes = [i for i in range(len(G.adj))]
     subsets = power_set(nodes)
     min_cover = nodes
     for subset in subsets:
@@ -222,3 +222,27 @@ def is_connected(G):
     predecessor = DFS3(G, start)
     reachable = set(predecessor.keys()) | {start}
     return len(reachable) == len(G.adj)
+
+#Helper function for MIS function Author: Sreyo Biswas
+def isIndependentSet(G, S):
+    for node1 in S:
+        for node2 in S:
+            #S is not an independent set if any two distinct nodes in S are connected by an edge in G
+            if node1 != node2 and G.are_connected(node1, node2):
+                return False
+    #return True otherwise
+    return True
+
+#MIS function Author : Sreyo Biswas
+def MIS(G):
+    nodes = [i for i in range(len(G.adj))]
+    subsets = power_set(nodes)
+    maxSet = []
+    #for each subset of nodes, we check for an independent set and update the maximum independent set accordingly
+    for subset in subsets:
+        if isIndependentSet(G, subset):
+            #update the max independent set if current subset is larger than the max independent set found so far
+            if len(subset) > len(maxSet):
+                maxSet = subset
+    #return the maximum independent set found
+    return maxSet
